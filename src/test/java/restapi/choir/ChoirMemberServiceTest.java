@@ -38,15 +38,17 @@ class ChoirMemberServiceTest {
     void newMemberIsAddedToChoir() {
         int previousMembersNumber = choirMemberRepository.findAll().size();
         choirMemberService.addMemberToChoirAndReturnId("newMember", "testPhoneNumber");
-
         assertThat(choirMemberRepository.findAll().size()).isGreaterThan(previousMembersNumber);
     }
 
     @Test
     void newMemberHasAnUniqueId() {
         List<Integer> idsOfOldMembers = choirMemberRepository.findAll().stream().map(ChoirMember::getID).collect(Collectors.toList());
-        Integer newMemberId = choirMemberService.addMemberToChoirAndReturnId("newMember", "testPhoneNumber");
-
+        Integer newMemberId = choirMemberService.addMemberToChoirAndReturnId("new", "testPhone");
         assertThat(idsOfOldMembers).doesNotContain(newMemberId);
+    }
+
+    @Test
+    void choirMemberIsUpdated() {
     }
 }

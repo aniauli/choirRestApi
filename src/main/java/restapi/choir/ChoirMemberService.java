@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,5 +24,12 @@ public class ChoirMemberService {
         ChoirMember newMember = ChoirMember.builder().name(name).phoneNumber(phoneNumber).build();
         choirMemberRepository.save(newMember);
         return newMember.getID();
+    }
+
+    void updateMembersData(Integer id, Optional<String> probableName, Optional<String> probablePhoneNumber){
+        ChoirMember memberToUpdate = choirMemberRepository
+                .findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
+        probableName.ifPresent(memberToUpdate::setName);
+        probablePhoneNumber.ifPresent(memberToUpdate::setPhoneNumber);
     }
 }
