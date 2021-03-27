@@ -18,7 +18,7 @@ public class ChoirMemberService {
         return listOfAllChoirMembers;
     }
 
-    int addMemberToChoirAndReturnId(String name, long phoneNumber){
+    int addMemberToChoirAndReturnId(String name, String phoneNumber){
         ChoirMember newMember = ChoirMember.builder().name(name).phoneNumber(phoneNumber).build();
         choirMemberRepository.save(newMember);
         return newMember.getID();

@@ -16,7 +16,7 @@ public class ChoirMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int ID;
+    private Integer ID;
     private String name;
-    private long phoneNumber;
+    private String phoneNumber;
 }

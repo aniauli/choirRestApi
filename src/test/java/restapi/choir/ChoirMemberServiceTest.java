@@ -13,9 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 class ChoirMemberServiceTest {
 
-    ChoirMember firstMember = ChoirMember.builder().name("john").phoneNumber(555555678).build();
-    ChoirMember secondMember = ChoirMember.builder().name("alex").phoneNumber(12345678).build();
-    ChoirMember thirdMember = ChoirMember.builder().name("jennifer").phoneNumber(1545462).build();
+    ChoirMember firstMember = ChoirMember.builder().name("john").phoneNumber("testPhoneNumber1").build();
+    ChoirMember secondMember = ChoirMember.builder().name("alex").phoneNumber("testPhoneNumber2").build();
+    ChoirMember thirdMember = ChoirMember.builder().name("jennifer").phoneNumber("testPhoneNumber3").build();
 
     ChoirMemberService choirMemberService;
 
@@ -37,19 +37,16 @@ class ChoirMemberServiceTest {
     @Test
     void newMemberIsAddedToChoir() {
         int previousMembersNumber = choirMemberRepository.findAll().size();
-        ChoirMember newMember = ChoirMember.builder().name("new").phoneNumber(155456).build();
-        choirMemberRepository.save(newMember);
-        int currentMembersNumber = choirMemberRepository.findAll().size();
+        choirMemberService.addMemberToChoirAndReturnId("newMember", "testPhoneNumber");
 
-        assertThat(currentMembersNumber).isGreaterThan(previousMembersNumber);
+        assertThat(choirMemberRepository.findAll().size()).isGreaterThan(previousMembersNumber);
     }
 
     @Test
     void newMemberHasAnUniqueId() {
         List<Integer> idsOfOldMembers = choirMemberRepository.findAll().stream().map(ChoirMember::getID).collect(Collectors.toList());
-        ChoirMember newMember = ChoirMember.builder().name("new").phoneNumber(155456).build();
-        choirMemberRepository.save(newMember);
+        Integer newMemberId = choirMemberService.addMemberToChoirAndReturnId("newMember", "testPhoneNumber");
 
-        assertThat(idsOfOldMembers).doesNotContain(newMember.getID());
+        assertThat(idsOfOldMembers).doesNotContain(newMemberId);
     }
 }
