@@ -46,14 +46,14 @@ class ChoirMemberServiceTest {
 
     @Test
     void newMemberHasAnUniqueId() {
-        List<Integer> idsOfOldMembers = choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getID).collect(Collectors.toList());
+        List<Integer> idsOfOldMembers = choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getId).collect(Collectors.toList());
         Integer newMemberId = choirMemberService.addMemberAndReturnId("new", "testPhone");
         assertThat(idsOfOldMembers).doesNotContain(newMemberId);
     }
 
     @Test
     void choirMembersPhoneNumberIsUpdated() {
-        Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getID();
+        Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getId();
         String newPhone = "newPhoneNumberForTest";
         choirMemberService.updateMembersData(idMemberToUpdate, Optional.empty(), Optional.of(newPhone));
         assertThat(choirMemberRepository.findById(idMemberToUpdate).get().getPhoneNumber()).isEqualTo(newPhone);
@@ -61,7 +61,7 @@ class ChoirMemberServiceTest {
 
     @Test
     void choirMembersNameIsUpdated() {
-        Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getID();
+        Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getId();
         String newName = "newUpdatedName";
         choirMemberService.updateMembersData(idMemberToUpdate, Optional.of(newName), Optional.empty());
         assertThat(choirMemberRepository.findById(idMemberToUpdate).get().getName()).isEqualTo(newName);
@@ -78,9 +78,9 @@ class ChoirMemberServiceTest {
 
     @Test
     void choirMemberIsDeleted() {
-        Integer idMemberToDelete = choirMemberRepository.findByName("alex").get().getID();
+        Integer idMemberToDelete = choirMemberRepository.findByName("alex").get().getId();
         choirMemberService.deleteMember(idMemberToDelete);
-        assertThat(choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getID).collect(Collectors.toList()))
+        assertThat(choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getId).collect(Collectors.toList()))
                 .doesNotContain(idMemberToDelete);
     }
 

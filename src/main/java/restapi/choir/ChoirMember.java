@@ -5,8 +5,8 @@ import lombok.Value;
 @Value
 public class ChoirMember {
 
-    private Integer ID;
-    private String name;
-    private String phoneNumber;
+    Integer id;
+    String name;
+    String phoneNumber;
 
 }

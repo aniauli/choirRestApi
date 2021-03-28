@@ -23,7 +23,7 @@ public class ChoirMemberService {
     int addMemberAndReturnId(String name, String phoneNumber){
         ChoirMemberEntity newMember = ChoirMemberEntity.builder().name(name).phoneNumber(phoneNumber).build();
         choirMemberRepository.save(newMember);
-        return newMember.getID();
+        return newMember.getId();
     }
 
     void updateMembersData(Integer id, Optional<String> probableName, Optional<String> probablePhoneNumber){
