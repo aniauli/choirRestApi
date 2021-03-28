@@ -14,22 +14,26 @@ public class ChoirMemberService {
 
     private final ChoirMemberRepository choirMemberRepository;
 
-    List<ChoirMember> listOfAllChoirMembersSortedByName(){
+    List<ChoirMember> listOfAllMembersSortedByName(){
         List<ChoirMember> listOfAllChoirMembers = choirMemberRepository.findAll();
         listOfAllChoirMembers.sort(Comparator.comparing(ChoirMember::getName));
         return listOfAllChoirMembers;
     }
 
-    int addMemberToChoirAndReturnId(String name, String phoneNumber){
+    int addMemberAndReturnId(String name, String phoneNumber){
         ChoirMember newMember = ChoirMember.builder().name(name).phoneNumber(phoneNumber).build();
         choirMemberRepository.save(newMember);
         return newMember.getID();
     }
 
     void updateMembersData(Integer id, Optional<String> probableName, Optional<String> probablePhoneNumber){
-        ChoirMember memberToUpdate = choirMemberRepository
-                .findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
+        ChoirMember memberToUpdate = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
         probableName.ifPresent(memberToUpdate::setName);
         probablePhoneNumber.ifPresent(memberToUpdate::setPhoneNumber);
+    }
+
+    void deleteMember(Integer id){
+        ChoirMember memberToDelete = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
+        choirMemberRepository.delete(memberToDelete);
     }
 }

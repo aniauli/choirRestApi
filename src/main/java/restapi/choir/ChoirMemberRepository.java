@@ -5,8 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChoirMemberRepository extends CrudRepository<ChoirMember, Integer> {
     List<ChoirMember> findAll();
+    Optional<ChoirMember> findByName(String name);
 }
