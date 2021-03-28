@@ -14,9 +14,9 @@ import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 class ChoirMemberServiceTest {
-    ChoirMember firstMember = ChoirMember.builder().name("john").phoneNumber("phoneNumberForTest1").build();
-    ChoirMember secondMember = ChoirMember.builder().name("alex").phoneNumber("phoneNumberForTest2").build();
-    ChoirMember thirdMember = ChoirMember.builder().name("jennifer").phoneNumber("phoneNumberForTest3").build();
+    ChoirMemberEntity firstMember = ChoirMemberEntity.builder().name("john").phoneNumber("phoneNumberForTest1").build();
+    ChoirMemberEntity secondMember = ChoirMemberEntity.builder().name("alex").phoneNumber("phoneNumberForTest2").build();
+    ChoirMemberEntity thirdMember = ChoirMemberEntity.builder().name("jennifer").phoneNumber("phoneNumberForTest3").build();
 
     ChoirMemberService choirMemberService;
 
@@ -32,8 +32,8 @@ class ChoirMemberServiceTest {
 
     @Test
     void listOfAllMembersIsSorted() {
-        List<ChoirMember> choirMembersSorted = choirMemberService.listOfAllMembersSortedByName();
-        assertThat(choirMembersSorted).containsExactly(secondMember, thirdMember, firstMember);
+        List<ChoirMemberEntity> choirMembersSortedEntity = choirMemberService.listOfAllMembersSortedByName();
+        assertThat(choirMembersSortedEntity).containsExactly(secondMember, thirdMember, firstMember);
     }
 
     @Test
@@ -41,23 +41,31 @@ class ChoirMemberServiceTest {
         int previousMembersNumber = choirMemberRepository.findAll().size();
         choirMemberService.addMemberAndReturnId("newMember", "testPhoneNumber");
         assertThat(choirMemberRepository.findAll().size()).isGreaterThan(previousMembersNumber);
+        assertThat(choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getName).collect(Collectors.toList())).contains("newMember");
     }
 
     @Test
     void newMemberHasAnUniqueId() {
-        List<Integer> idsOfOldMembers = choirMemberRepository.findAll().stream().map(ChoirMember::getID).collect(Collectors.toList());
+        List<Integer> idsOfOldMembers = choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getID).collect(Collectors.toList());
         Integer newMemberId = choirMemberService.addMemberAndReturnId("new", "testPhone");
         assertThat(idsOfOldMembers).doesNotContain(newMemberId);
     }
 
     @Test
-    void choirMemberIsUpdated() {
+    void choirMembersPhoneNumberIsUpdated() {
         Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getID();
         String newPhone = "newPhoneNumberForTest";
         choirMemberService.updateMembersData(idMemberToUpdate, Optional.empty(), Optional.of(newPhone));
         assertThat(choirMemberRepository.findById(idMemberToUpdate).get().getPhoneNumber()).isEqualTo(newPhone);
     }
 
+    @Test
+    void choirMembersNameIsUpdated() {
+        Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getID();
+        String newName = "newUpdatedName";
+        choirMemberService.updateMembersData(idMemberToUpdate, Optional.of(newName), Optional.empty());
+        assertThat(choirMemberRepository.findById(idMemberToUpdate).get().getName()).isEqualTo(newName);
+    }
 
     @Test
     void anExceptionIsThrownWhenUpdatingNonChoirMember() {
@@ -72,7 +80,7 @@ class ChoirMemberServiceTest {
     void choirMemberIsDeleted() {
         Integer idMemberToDelete = choirMemberRepository.findByName("alex").get().getID();
         choirMemberService.deleteMember(idMemberToDelete);
-        assertThat(choirMemberRepository.findAll().stream().map(ChoirMember::getID).collect(Collectors.toList()))
+        assertThat(choirMemberRepository.findAll().stream().map(ChoirMemberEntity::getID).collect(Collectors.toList()))
                 .doesNotContain(idMemberToDelete);
     }
 

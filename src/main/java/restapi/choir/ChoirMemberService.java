@@ -14,26 +14,27 @@ public class ChoirMemberService {
 
     private final ChoirMemberRepository choirMemberRepository;
 
-    List<ChoirMember> listOfAllMembersSortedByName(){
-        List<ChoirMember> listOfAllChoirMembers = choirMemberRepository.findAll();
-        listOfAllChoirMembers.sort(Comparator.comparing(ChoirMember::getName));
-        return listOfAllChoirMembers;
+    List<ChoirMemberEntity> listOfAllMembersSortedByName(){
+        List<ChoirMemberEntity> listOfAllChoirMemberEntities = choirMemberRepository.findAll();
+        listOfAllChoirMemberEntities.sort(Comparator.comparing(ChoirMemberEntity::getName));
+        return listOfAllChoirMemberEntities;
     }
 
     int addMemberAndReturnId(String name, String phoneNumber){
-        ChoirMember newMember = ChoirMember.builder().name(name).phoneNumber(phoneNumber).build();
+        ChoirMemberEntity newMember = ChoirMemberEntity.builder().name(name).phoneNumber(phoneNumber).build();
         choirMemberRepository.save(newMember);
         return newMember.getID();
     }
 
     void updateMembersData(Integer id, Optional<String> probableName, Optional<String> probablePhoneNumber){
-        ChoirMember memberToUpdate = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
+        ChoirMemberEntity memberToUpdate = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
         probableName.ifPresent(memberToUpdate::setName);
         probablePhoneNumber.ifPresent(memberToUpdate::setPhoneNumber);
+        choirMemberRepository.save(memberToUpdate);
     }
 
     void deleteMember(Integer id){
-        ChoirMember memberToDelete = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
+        ChoirMemberEntity memberToDelete = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
         choirMemberRepository.delete(memberToDelete);
     }
 }
