@@ -19,18 +19,18 @@ public class ChoirMemberController {
     }
 
     @PostMapping("/addmember")
-    int addNewMember(@RequestBody ChoirMember newChoirMember) {
-        return choirMemberService.addMemberAndReturnId(newChoirMember.getName(), newChoirMember.getPhoneNumber());
+    int addNewMember(@RequestBody ChoirMemberToAdd newChoirMemberToAdd) {
+        return choirMemberService.addMemberAndReturnId(newChoirMemberToAdd.getName(), newChoirMemberToAdd.getPhoneNumber());
     }
 
     @PutMapping("/updatemember")
     void updateMember(@RequestBody ChoirMemberToUpdate choirMemberToUpdate) {
         choirMemberService.updateMembersData(
-                choirMemberToUpdate.getID(), choirMemberToUpdate.getName(), choirMemberToUpdate.getPhoneNumber());
+                choirMemberToUpdate.getId(), choirMemberToUpdate.getName(), choirMemberToUpdate.getPhoneNumber());
     }
 
-    @DeleteMapping("/deletemember")
-    void deleteMember(@RequestBody ChoirMember choirMemberToDelete) {
-        choirMemberService.deleteMember(choirMemberToDelete.getId());
+    @DeleteMapping("/deletemember/{id}")
+    void deleteMember(@PathVariable Integer id) {
+        choirMemberService.deleteMember(id);
     }
 }

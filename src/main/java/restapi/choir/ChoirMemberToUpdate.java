@@ -1,13 +1,15 @@
 package restapi.choir;
 
 import lombok.Value;
-
-import java.util.Optional;
+import org.springframework.lang.Nullable;
 
 @Value
 public class ChoirMemberToUpdate {
 
-    Integer ID;
-    Optional<String> name;
-    Optional<String> phoneNumber;
+    Integer id;
+    @Nullable
+    String name;
+    @Nullable
+    String phoneNumber;
+
 }

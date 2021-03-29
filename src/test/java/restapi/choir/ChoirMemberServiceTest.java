@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
@@ -55,7 +54,7 @@ class ChoirMemberServiceTest {
     void choirMembersPhoneNumberIsUpdated() {
         Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getId();
         String newPhone = "newPhoneNumberForTest";
-        choirMemberService.updateMembersData(idMemberToUpdate, Optional.empty(), Optional.of(newPhone));
+        choirMemberService.updateMembersData(idMemberToUpdate, null, newPhone);
         assertThat(choirMemberRepository.findById(idMemberToUpdate).get().getPhoneNumber()).isEqualTo(newPhone);
     }
 
@@ -63,7 +62,7 @@ class ChoirMemberServiceTest {
     void choirMembersNameIsUpdated() {
         Integer idMemberToUpdate = choirMemberRepository.findByName("alex").get().getId();
         String newName = "newUpdatedName";
-        choirMemberService.updateMembersData(idMemberToUpdate, Optional.of(newName), Optional.empty());
+        choirMemberService.updateMembersData(idMemberToUpdate, newName, null);
         assertThat(choirMemberRepository.findById(idMemberToUpdate).get().getName()).isEqualTo(newName);
     }
 
@@ -72,7 +71,7 @@ class ChoirMemberServiceTest {
         Integer idMemberToUpdate = 0;
         String newName = "newNameForTest";
         assertThatExceptionOfType(NoSuchElementException.class)
-                .isThrownBy(() -> choirMemberService.updateMembersData(idMemberToUpdate, Optional.of(newName), Optional.empty()))
+                .isThrownBy(() -> choirMemberService.updateMembersData(idMemberToUpdate, newName, null))
                 .withMessage("There is no member with id " + idMemberToUpdate);
     }
 

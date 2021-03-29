@@ -3,9 +3,8 @@ package restapi.choir;
 import lombok.Value;
 
 @Value
-public class ChoirMember {
+public class ChoirMemberToAdd {
 
-    Integer id;
     String name;
     String phoneNumber;
 

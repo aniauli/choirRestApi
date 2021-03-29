@@ -26,10 +26,14 @@ public class ChoirMemberService {
         return newMember.getId();
     }
 
-    void updateMembersData(Integer id, Optional<String> probableName, Optional<String> probablePhoneNumber){
-        ChoirMemberEntity memberToUpdate = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
-        probableName.ifPresent(memberToUpdate::setName);
-        probablePhoneNumber.ifPresent(memberToUpdate::setPhoneNumber);
+    void updateMembersData(Integer id, String probableName, String probablePhoneNumber){
+        ChoirMemberEntity memberToUpdate = choirMemberRepository.findById(id).orElseThrow(() -> new InvalidIdException("There is no member with id " + id));
+        if(probableName != null){
+            memberToUpdate.setName(probableName);
+        }
+        if(probablePhoneNumber != null) {
+            memberToUpdate.setPhoneNumber(probablePhoneNumber);
+        }
         choirMemberRepository.save(memberToUpdate);
     }
 
