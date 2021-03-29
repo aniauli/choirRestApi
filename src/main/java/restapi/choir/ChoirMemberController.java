@@ -9,9 +9,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/choirmembers")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ChoirMemberController {
+class ChoirMemberController {
 
-    ChoirMemberService choirMemberService;
+    private final ChoirMemberService choirMemberService;
 
     @GetMapping("/showall")
     List<ChoirMemberEntity> showAllMembers() {

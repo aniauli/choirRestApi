@@ -6,21 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
+
 @DataJpaTest
 class ChoirMemberServiceTest {
-    ChoirMemberEntity firstMember = ChoirMemberEntity.builder().name("john").phoneNumber("phoneNumberForTest1").build();
-    ChoirMemberEntity secondMember = ChoirMemberEntity.builder().name("alex").phoneNumber("phoneNumberForTest2").build();
-    ChoirMemberEntity thirdMember = ChoirMemberEntity.builder().name("jennifer").phoneNumber("phoneNumberForTest3").build();
+    private final ChoirMemberEntity firstMember = ChoirMemberEntity.builder().name("john").phoneNumber("phoneNumberForTest1").build();
+    private final ChoirMemberEntity secondMember = ChoirMemberEntity.builder().name("alex").phoneNumber("phoneNumberForTest2").build();
+    private final ChoirMemberEntity thirdMember = ChoirMemberEntity.builder().name("jennifer").phoneNumber("phoneNumberForTest3").build();
 
-    ChoirMemberService choirMemberService;
+    private ChoirMemberService choirMemberService;
 
     @Autowired
-    ChoirMemberRepository choirMemberRepository;
+    private ChoirMemberRepository choirMemberRepository;
 
     @BeforeEach
     void setUp(){
@@ -70,7 +70,7 @@ class ChoirMemberServiceTest {
     void anExceptionIsThrownWhenUpdatingNonChoirMember() {
         Integer idMemberToUpdate = 0;
         String newName = "newNameForTest";
-        assertThatExceptionOfType(NoSuchElementException.class)
+        assertThatExceptionOfType(InvalidIdException.class)
                 .isThrownBy(() -> choirMemberService.updateMembersData(idMemberToUpdate, newName, null))
                 .withMessage("There is no member with id " + idMemberToUpdate);
     }
@@ -86,7 +86,7 @@ class ChoirMemberServiceTest {
     @Test
     void anExceptionIsThrownWhenDeletingNonChoirMember() {
         Integer idMemberToDelete = 0;
-        assertThatExceptionOfType(NoSuchElementException.class)
+        assertThatExceptionOfType(InvalidIdException.class)
                 .isThrownBy(() -> choirMemberService.deleteMember(idMemberToDelete))
                 .withMessage("There is no member with id " + idMemberToDelete);
     }

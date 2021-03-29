@@ -5,12 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ChoirMemberService {
+
+class ChoirMemberService {
 
     private final ChoirMemberRepository choirMemberRepository;
 

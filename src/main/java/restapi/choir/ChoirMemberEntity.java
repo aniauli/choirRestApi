@@ -12,7 +12,8 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChoirMemberEntity {
+
+class ChoirMemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

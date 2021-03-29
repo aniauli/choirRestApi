@@ -24,6 +24,7 @@ class ChoirMemberControllerTest {
 
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String CHOIR_MEMBERS = "/choirmembers";
 
     @BeforeEach
     void setUp(){
@@ -32,13 +33,12 @@ class ChoirMemberControllerTest {
 
     @Test
     void givenShowAllUrlControllerShowsAllMembers() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/choirmembers/showall"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get(CHOIR_MEMBERS + "/showall")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void givenAddMemberUrlControllerAddsMember() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/choirmembers/addmember")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(CHOIR_MEMBERS + "/addmember")
                     .content(objectMapper.writeValueAsString(new ChoirMemberToAdd("testName", "testPhoneNumber")))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
@@ -52,31 +52,29 @@ class ChoirMemberControllerTest {
     void givenUpdateMemberUrlWithValidIdControllerUpdatesMembersPhoneNumber() throws Exception {
         givenAddMemberUrlControllerAddsMember();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/choirmembers/updatemember")
+        mockMvc.perform(MockMvcRequestBuilders.put(CHOIR_MEMBERS + "/updatemember")
                     .content(objectMapper.writeValueAsString(
                         new ChoirMemberToUpdate(1, null, "testUpdatedPhoneNumber")))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-
     }
 
     @Test
     void givenUpdateMemberUrlWithValidIdControllerUpdatesMembersName() throws Exception {
         givenAddMemberUrlControllerAddsMember();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/choirmembers/updatemember")
+        mockMvc.perform(MockMvcRequestBuilders.put(CHOIR_MEMBERS + "/updatemember")
                 .content(objectMapper.writeValueAsString(
                         new ChoirMemberToUpdate(1, "testUpdatedName", null)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-
     }
 
     @Test
     void givenUpdateMemberUrlWithInvalidIdControllerThrowsException() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/choirmembers/updatemember")
+        mockMvc.perform(MockMvcRequestBuilders.put(CHOIR_MEMBERS + "/updatemember")
                     .content(objectMapper.writeValueAsString(
                             new ChoirMemberToUpdate(150, "testUpdatedName", "testUpdatedPhoneNumber")))
                     .contentType(MediaType.APPLICATION_JSON)
@@ -89,14 +87,13 @@ class ChoirMemberControllerTest {
         givenAddMemberUrlControllerAddsMember();
         givenAddMemberUrlControllerAddsMember();
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/choirmembers/deletemember/2"))
+        mockMvc.perform(MockMvcRequestBuilders.delete(CHOIR_MEMBERS + "/deletemember/2"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-
     }
 
     @Test
     void givenDeleteMemberUrlWithInvalidIdControllerThrowsException() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/choirmembers/deletemember/20"))
+        mockMvc.perform(MockMvcRequestBuilders.delete(CHOIR_MEMBERS + "/deletemember/20"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
