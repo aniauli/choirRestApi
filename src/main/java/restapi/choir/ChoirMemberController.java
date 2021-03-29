@@ -23,9 +23,14 @@ public class ChoirMemberController {
         return choirMemberService.addMemberAndReturnId(newChoirMember.getName(), newChoirMember.getPhoneNumber());
     }
 
-    @PostMapping("/updatemember")
+    @PutMapping("/updatemember")
     void updateMember(@RequestBody ChoirMemberToUpdate choirMemberToUpdate) {
         choirMemberService.updateMembersData(
                 choirMemberToUpdate.getID(), choirMemberToUpdate.getName(), choirMemberToUpdate.getPhoneNumber());
+    }
+
+    @DeleteMapping("/deletemember")
+    void deleteMember(@RequestBody ChoirMember choirMemberToDelete) {
+        choirMemberService.deleteMember(choirMemberToDelete.getId());
     }
 }
