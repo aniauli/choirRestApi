@@ -14,9 +14,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
-import java.util.NoSuchElementException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -79,13 +76,28 @@ class ChoirMemberControllerTest {
 
     @Test
     void givenUpdateMemberUrlWithInvalidIdControllerThrowsException() throws Exception {
-        givenAddMemberUrlControllerAddsMember();
-
         mockMvc.perform(MockMvcRequestBuilders.put("/choirmembers/updatemember")
                     .content(objectMapper.writeValueAsString(
                             new ChoirMemberToUpdate(150, "testUpdatedName", "testUpdatedPhoneNumber")))
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void givenDeleteMemberUrlWithValidIdControllerDeletesMembersName() throws Exception {
+        givenAddMemberUrlControllerAddsMember();
+        givenAddMemberUrlControllerAddsMember();
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/choirmembers/deletemember/2"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+    @Test
+    void givenDeleteMemberUrlWithInvalidIdControllerThrowsException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/choirmembers/deletemember/20"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
     }
 }

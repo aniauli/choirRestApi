@@ -38,7 +38,7 @@ public class ChoirMemberService {
     }
 
     void deleteMember(Integer id){
-        ChoirMemberEntity memberToDelete = choirMemberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("There is no member with id " + id));
+        ChoirMemberEntity memberToDelete = choirMemberRepository.findById(id).orElseThrow(() -> new InvalidIdException("There is no member with id " + id));
         choirMemberRepository.delete(memberToDelete);
     }
 }
